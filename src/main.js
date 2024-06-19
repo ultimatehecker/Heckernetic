@@ -1,4 +1,5 @@
 const { Client, IntentsBitField } = require('discord.js');
+const eventHandler = require('./handlers/eventHandler');
 require('dotenv').config();
 
 const client = new Client({
@@ -10,15 +11,5 @@ const client = new Client({
     ],
 });
 
-client.on('ready', () => {
-    console.log('Heckernetic is ready!');
-});
-
-client.on('messageCreate', (message) => {
-    if (message.author.bot) return;
-    if (message.content === 'ping') {
-        message.channel.send('pong');
-    }
-});
-
+eventHandler(client);
 client.login(process.env.HECKERNETIC_TOKEN);

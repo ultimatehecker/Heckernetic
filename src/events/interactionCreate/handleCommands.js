@@ -1,4 +1,4 @@
-const { Client, Interaction, EmbedBuilder } = require('discord.js');
+const { Client, Interaction, Discord } = require('discord.js');
 const getLocalComands = require(`../../utilities/getLocalCommands`);
 const developers = ["724798908278112309"]
 

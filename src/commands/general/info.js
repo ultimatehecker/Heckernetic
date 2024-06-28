@@ -27,7 +27,6 @@ module.exports = {
         }
 
         const prettyMS = (await (importPrettyMS)).default;
-        console.log(prettyMS);
 
         os.cpuUsage((percentage) => {
             const information = new Discord.EmbedBuilder()
@@ -38,7 +37,7 @@ module.exports = {
                 .setFields([
                     { name: "Uptime", value: `\`${prettyMS(os.processUptime() * 1000, {verbose: true,})}\``, inline: true },
 					{ name: "Latency", value: `Bot's Latency: \`${Date.now() - interaction.createdTimestamp}\` ms \n API Latency: \`${Math.round(client.ws.ping)}\` ms`, inline: true },
-					{ name: "System", value: `CPU Usage: \`${Math.round((percentage * 100) / os.cpuCount())}%\` \n Memory Usage: \`${Math.round(process.memoryUsage().rss)}MB\``, inline: true },
+					{ name: "System", value: `CPU Usage: \`${Math.round((percentage * 100) / os.cpuCount())}%\` \n RAM Usage: \`${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)}MB\``, inline: true },
 					{ name: "Popularity", value: `Number of Servers: \`${client.guilds.cache.size}\``, inline: true },
                 ])
 

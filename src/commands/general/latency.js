@@ -15,6 +15,7 @@ module.exports = {
    * @param {Client} client 
    * @param {Interaction} interaction 
    */
+  
   callback: async (client, interaction) => {
     await interaction.deferReply({ ephemeral: false });
     const latencyTest = new ActionRowBuilder().addComponents(new ButtonBuilder().setLabel('Retry').setCustomId('Retry').setStyle(ButtonStyle.Primary));

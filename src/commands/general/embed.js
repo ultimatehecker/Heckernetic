@@ -11,7 +11,7 @@ module.exports = {
         {
             name: 'title',
             description: 'The title for the embed',
-            required: false,
+            required: trues,
             type: ApplicationCommandOptionType.String,
         },
         {
@@ -21,134 +21,110 @@ module.exports = {
             type: ApplicationCommandOptionType.String,
             choices: [
                 {
-                    name: 'Default',
-                    value: 'Default'
-                },
+					name: "DEFAULT",
+					value: 'Default'
+				},
                 {
-                    name: 'White',
-                    value: 'White'
-                },
-                {
-                    name: 'Aqua',
-                    value: 'Aqua'
-                },
-                {
-                    name: 'Green',
-                    value: 'Green'
-                },
-                {
-                    name: 'Blue',
-                    value: 'Blue'
-                },
-                {
-                    name: 'Yellow',
-                    value: 'Yellow'
-                },
-                {
-                    name: 'Purple',
-                    value: 'Purple'
-                },
-                {
-                    name: 'Luminous Vivid Pink',
-                    value: 'LuminousVividPink'
-                },
-                {
-                    name: 'Fuchsia',
-                    value: 'Fuchsia'
-                },
-                {
-                    name: 'Gold',
-                    value: 'Gold'
-                },
-                {
-                    name: 'Orange',
-                    value: 'Orange'
-                },
-                {
-                    name: 'Red',
-                    value: 'Red'
-                },
-                {
-                    name: 'Grey',
-                    value: 'Grey'
-                },
-                {
-                    name: 'Navy',
-                    value: 'Navy'
-                },
-                {
-                    name: 'Dark Aqua',
-                    value: 'DarkAqua'
-                },
-                {
-                    name: 'Dark Green',
-                    value: 'DarkGreen'
-                },
-                {
-                    name: 'Dark Blue',
-                    value: 'DarkBlue'
-                },
-                {
-                    name: 'Dark Purple',
-                    value: 'DarkPurple'
-                },
-                {
-                    name: 'Dark Vivid Pink',
-                    value: 'DarkVividPink'
-                },
-                {
-                    name: 'Dark Gold',
-                    value: 'DarkGold'
-                },
-                {
-                    name: 'Dark Orange',
-                    value: 'DarkOrange'
-                },
-                {
-                    name: 'Dark Red',
-                    value: 'DarkRed'
-                },
-                {
-                    name: 'Dark Grey',
-                    value: 'DarkGrey'
-                },
-                {
-                    name: 'Darker Grey',
-                    value: 'DarkerGrey'
-                },
-                {
-                    name: 'Light Grey',
-                    value: 'LightGrey'
-                },
-                {
-                    name: 'Dark Navy',
-                    value: 'DarkNavy'
-                },
-                {
-                    name: 'Blurple',
-                    value: 'Blurple'
-                },
-                {
-                    name: 'Greyple',
-                    value: 'Greyple'
-                },
-                {
-                    name: 'Dark But Not Black',
-                    value: 'DarkButNotBlack'
-                },
-                {
-                    name: 'Not Quite Black',
-                    value: 'NotQuiteBlack'
-                },
-                {
-                    name: 'Random',
-                    value: 'Random'
-                },
+					name: "WHITE",
+					value: 'White'
+				},
+				{
+					name: "AQUA",
+					value: 'Aqua'
+				},
+				{
+					name: "GREEN",
+					value: 'Green'
+				},
+				{
+					name: "BLUE",
+					value: 'Blue'
+				},
+				{
+					name: "YELLOW",
+					value: 'Yellow'
+				},
+				{
+					name: "PURPLE",
+					value: 'Purple'
+				},
+				{
+					name: "LUMINOUS VIVID PINK",
+					value: 'LuminousVividPink'
+				},
+				{
+					name: "GOLD",
+					value: 'Gold'
+				},
+				{
+					name: "ORANGE",
+					value: 'Orange'
+				},
+				{
+					name: "RED",
+					value: 'Red'
+				},
+				{
+					name: "GREY",
+					value: 'Grey'
+				},
+				{
+					name: "NAVY",
+					value: 'Navy'
+				},
+				{
+					name: "DARK AQUA",
+					value: 'DarkAqua'
+				},
+				{
+					name: "DARK GREEN",
+					value: 'DarkGreen'
+				},
+				{
+					name: "Dark BLUE",
+					value: 'DarkBlue'
+				},
+				{
+					name: "DARK PURPLE",
+					value: 'DarkPurple'
+				},
+				{
+					name: "DARK VIVID PINK",
+					value: 'DarkVividPink'
+				},
+				{
+					name: "DARK GOLD",
+					value: 'DarkGold'
+				},
+				{
+					name: "DARK ORANGE",
+					value: 'DarkOrange'
+				},
+				{
+					name: "DARK RED",
+					value: 'DarkRed'
+				},
+				{
+					name: "DARK GREY",
+					value: 'DarkGrey'
+				},
+				{
+					name: "LIGHT GREY",
+					value: 'LightGrey'
+				},
+				{
+					name: "BLURPLE",
+					value: 'Blurple'
+				},
+				{
+					name: "GREYPLE",
+					value: 'Greyple'
+				},
             ]
         },
         {
-            name: 'description',
-            description: 'The description for the embed',
+            name: 'footer',
+            description: 'The footer for the embed',
             required: false,
             type: ApplicationCommandOptionType.String,
         },
@@ -174,10 +150,14 @@ module.exports = {
         const title = interaction.options.get("title")?.value
         const color = interaction.options.get("color")?.value
         const description = interaction.options.get("description")?.value
+        const footer = interaction.options.get("footer")?.value
 
-        const embed = new Discord.EmbedBuilder()
+        try {
+            const embed = new Discord.EmbedBuilder()
             .setTitle(title)
             .setDescription(description)
+
+            if (footer) embed.setFooter(footer)
 
             if (color) {
                 embed.setColor(color)
@@ -185,6 +165,15 @@ module.exports = {
                 embed.setColor(colors["Black"])
             }
 
-        interaction.editReply({ embeds: [embed], allowedMentions: { repliedUser: true } });
+            interaction.editReply({ embeds: [embed], allowedMentions: { repliedUser: true } });
+            
+        } catch (err) {
+            const error = new Discord.EmbedBuilder()
+                .setAuthor(authorError)
+                .setColor(colors["ErrorColor"])
+                .setDescription(`You must enter a valid ColorResolvable. Please click the button below to view the ColorResolvable options.`)
+
+            interaction.editReply({ embeds: [error], components: [colorButton], allowedMentions: { repliedUser: true } });
+        }
     }
 }

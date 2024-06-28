@@ -11,7 +11,7 @@ module.exports = {
         {
             name: 'title',
             description: 'The title for the embed',
-            required: trues,
+            required: true,
             type: ApplicationCommandOptionType.String,
         },
         {
@@ -166,7 +166,7 @@ module.exports = {
             }
 
             interaction.editReply({ embeds: [embed], allowedMentions: { repliedUser: true } });
-            
+
         } catch (err) {
             const error = new Discord.EmbedBuilder()
                 .setAuthor(authorError)

@@ -21,9 +21,129 @@ module.exports = {
             type: ApplicationCommandOptionType.String,
             choices: [
                 {
-                    name: 'WHITE',
+                    name: 'Default',
+                    value: 'Default'
+                },
+                {
+                    name: 'White',
                     value: 'White'
-                }
+                },
+                {
+                    name: 'Aqua',
+                    value: 'Aqua'
+                },
+                {
+                    name: 'Green',
+                    value: 'Green'
+                },
+                {
+                    name: 'Blue',
+                    value: 'Blue'
+                },
+                {
+                    name: 'Yellow',
+                    value: 'Yellow'
+                },
+                {
+                    name: 'Purple',
+                    value: 'Purple'
+                },
+                {
+                    name: 'Luminous Vivid Pink',
+                    value: 'LuminousVividPink'
+                },
+                {
+                    name: 'Fuchsia',
+                    value: 'Fuchsia'
+                },
+                {
+                    name: 'Gold',
+                    value: 'Gold'
+                },
+                {
+                    name: 'Orange',
+                    value: 'Orange'
+                },
+                {
+                    name: 'Red',
+                    value: 'Red'
+                },
+                {
+                    name: 'Grey',
+                    value: 'Grey'
+                },
+                {
+                    name: 'Navy',
+                    value: 'Navy'
+                },
+                {
+                    name: 'Dark Aqua',
+                    value: 'DarkAqua'
+                },
+                {
+                    name: 'Dark Green',
+                    value: 'DarkGreen'
+                },
+                {
+                    name: 'Dark Blue',
+                    value: 'DarkBlue'
+                },
+                {
+                    name: 'Dark Purple',
+                    value: 'DarkPurple'
+                },
+                {
+                    name: 'Dark Vivid Pink',
+                    value: 'DarkVividPink'
+                },
+                {
+                    name: 'Dark Gold',
+                    value: 'DarkGold'
+                },
+                {
+                    name: 'Dark Orange',
+                    value: 'DarkOrange'
+                },
+                {
+                    name: 'Dark Red',
+                    value: 'DarkRed'
+                },
+                {
+                    name: 'Dark Grey',
+                    value: 'DarkGrey'
+                },
+                {
+                    name: 'Darker Grey',
+                    value: 'DarkerGrey'
+                },
+                {
+                    name: 'Light Grey',
+                    value: 'LightGrey'
+                },
+                {
+                    name: 'Dark Navy',
+                    value: 'DarkNavy'
+                },
+                {
+                    name: 'Blurple',
+                    value: 'Blurple'
+                },
+                {
+                    name: 'Greyple',
+                    value: 'Greyple'
+                },
+                {
+                    name: 'Dark But Not Black',
+                    value: 'DarkButNotBlack'
+                },
+                {
+                    name: 'Not Quite Black',
+                    value: 'NotQuiteBlack'
+                },
+                {
+                    name: 'Random',
+                    value: 'Random'
+                },
             ]
         },
         {
@@ -54,15 +174,6 @@ module.exports = {
         const title = interaction.options.get("title")?.value
         const color = interaction.options.get("color")?.value
         const description = interaction.options.get("description")?.value
-
-        if(!title || !description) {
-            const error = new Discord.EmbedBuilder()
-                .setAuthor(authorError)
-                .setColor(colors["ErrorColor"])
-                .setDescription('You need to provide a title and a description for the embed. For a list of color options, click the button below.')
-
-            interaction.editReply({ embeds: [error], components: [colorButton], allowedMentions: { repliedUser: true } });
-        }
 
         const embed = new Discord.EmbedBuilder()
             .setTitle(title)

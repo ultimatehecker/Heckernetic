@@ -17,8 +17,16 @@ module.exports = async (client) => {
         for (const localCommand of localCommands) {
           const { name, description, options } = localCommand;
           const existingCommand = await applicationCommands.cache.find((cmd) => cmd.name === name);
-    
-          if (existingCommand) {
+
+          if(process.argv.includes('-r')) {
+            client.application.commands.set([], process.env.GUILD_ID).then(() => {
+              console.log(`⚠️ Successfully purged all commands (/) from the guild ${process.env.GUILD_ID}`);
+            });
+          } else if(process.argv.includes('-R')) {
+            client.application.commands.set([]).then(() => {
+              console.log(`⛔ Successfully purged all commands (/) globally.`);
+            });
+          } else if (existingCommand) {
             if (localCommand.deleted) {
               await applicationCommands.delete(existingCommand.id);
               console.log(`🗑 Successfuly deleted the command "${name}".`);
@@ -41,6 +49,6 @@ module.exports = async (client) => {
           }
         }
       } catch (error) {
-        console.log(`TThere was an error: ${error}`);
+        console.log(`There was an error: ${error}`);
       }
 };

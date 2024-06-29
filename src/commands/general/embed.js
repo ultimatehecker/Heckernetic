@@ -15,6 +15,12 @@ module.exports = {
             type: ApplicationCommandOptionType.String,
         },
         {
+            name: 'description',
+            description: 'The description for the embed',
+            required: true,
+            type: ApplicationCommandOptionType.String,
+        },
+        {
             name: 'color',
             description: 'The color for the embed',
             required: false,

@@ -11,6 +11,7 @@
   "author": "ultimate_hecker",
   "license": "ISC",
   "dependencies": {
+    "ascii-table": "^0.0.9",
     "axios": "^1.7.2",
     "discord.js": "^14.14.1",
     "dotenv": "^16.3.1",

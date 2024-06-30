@@ -31,6 +31,11 @@ const userSchema = new Schema({
         default: 0
     },
 
+    iron: {
+        type: Number,
+        default: 0
+    },
+
     bank: {
         type: Number,
         required: true
@@ -42,6 +47,11 @@ const userSchema = new Schema({
     },
 
     infractions: {
+        type: Array,
+        default: []
+    },
+
+    inventory: {
         type: Array,
         default: []
     }

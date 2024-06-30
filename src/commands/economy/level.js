@@ -14,7 +14,7 @@ module.exports = {
         {
             name: 'user',
             description: 'The user you want to see the level of',
-            type: ApplicationCommandOptionType.User,
+            type: ApplicationCommandOptionType.Mentionable,
             required: false,
         }
     ],

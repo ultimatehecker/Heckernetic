@@ -6,41 +6,40 @@ const Level = require('../../models/Level');
 const Discord = require('discord.js');
 const cooldowns = new Set();
 
-function getRandomXp(minimum, maximum) {
-    minimum = Math.ceil(minimum);
-    maximum = Math.floor(maximum);
-    return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+function getRandomXp(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
 
 /**
  * @param {Client} client
  * @param {Message} message
- * @param {Discord} Discord
  */
 
-module.exports = async (client, message, Discord) => {
-
-    if(!message.inGuild() || message.author.bot || cooldowns.has(message.author.id)) return;
-    const xpToDistribute = getRandomXp(5, 15);
-
-    const query = {
-        userId: message.author.id,
-        guildId: message.guild.id
-    };
+module.exports = async (client, message) => {
 
     let authorLevelUp = {
         name: "Level Up!",
         iconURL: "https://cdn.discordapp.com/avatars/1148422189129941032/05c7d704c2a36b00f7c08d25fe16675c.webp"
     }
 
+    if (!message.inGuild() || message.author.bot || cooldowns.has(message.author.id)) return;
+    const xpToDistribute = getRandomXp(5, 15);
+
+    const query = {
+        userId: message.author.id,
+        guildId: message.guild.id,
+    };
+
     try {
         const level = await Level.findOne(query);
 
         if(level) {
             level.xp += xpToDistribute;
+            console.log(level.xp)
 
-            if(level.xp > calculateLevelXp(level.level)) {
+            if (level.xp > calculateLevelXp(level.level)) {
                 level.xp = 0;
                 level.level += 1;
 
@@ -59,19 +58,20 @@ module.exports = async (client, message, Discord) => {
                 setTimeout(() => {
                     cooldowns.delete(message.author.id);
                 }, 60000);
-            } else {
-                const newLevel = new Level({
-                    userId: message.author.id,
-                    guildId: message.guild.id,
-                    xp: xpToDistribute,
-                });
-
-                await newLevel.save();
-                cooldowns.add(message.author.id);
-                setTimeout(() => {
-                    cooldowns.delete(message.author.id);
-                }, 60000);
             }
+        } else {
+            const newLevel = new Level({
+              userId: message.author.id,
+              guildId: message.guild.id,
+              xp: xpToDistribute,
+            });
+      
+            await newLevel.save();
+            console.log(newLevel)
+            cooldowns.add(message.author.id);
+            setTimeout(() => {
+              cooldowns.delete(message.author.id);
+            }, 60000);
         }
     } catch (err) {
         console.error("There was an error when assigning xp: ", err);

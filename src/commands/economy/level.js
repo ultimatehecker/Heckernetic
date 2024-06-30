@@ -73,15 +73,14 @@ module.exports = {
         Font.loadDefault();
 
         const rank = new RankCardBuilder()
+            .setDisplayName(targetUserObject.displayName)
+            .setUsername(targetUserObject.user.username)
             .setAvatar(targetUserObject.user.displayAvatarURL({ size: 256 }))
-            .setRank(currentRank)
-            .setLevel(fetchedLevel.level)
             .setCurrentXP(fetchedLevel.xp)
             .setRequiredXP(calculateLevelXp(fetchedLevel.level))
-            // .setStatus(targetUserObject.presence.status)
-            // .setRank('#FFA500', 'COLOR')
-            .setUsername(targetUserObject.user.username)
-            // .setDiscriminator(targetUserObject.user.discriminator)
+            .setLevel(fetchedLevel.level)
+            .setRank(currentRank)
+            .setStatus(targetUserObject.presence.status)
             .setTextStyles({
                 level: "LEVEL:", 
                 xp: "EXP:", 

@@ -1,5 +1,5 @@
 const calculateLevelXp = require(`../../utilities/calculateLevelXp`);
-const getRandomXp = require('../../functions/getRandomXp');
+// const getRandomXp = require('../../functions/getRandomXp');
 const { Client, Message } = require('discord.js');
 const colors = require(`../../tools/colors.json`);
 const Level = require('../../models/Level');
@@ -13,6 +13,12 @@ const cooldowns = new Set();
  */
 
 module.exports = async (client, message, Discord) => {
+    function getRandomXp(minimum, maximum) {
+        minimum = Math.ceil(minimum);
+        maximum = Math.floor(maximum);
+        return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+    }
+    
     if(!message.inGuild() || message.author.bot || cooldowns.has(message.author.id)) return;
     const xpToDistribute = getRandomXp(5, 15);
 

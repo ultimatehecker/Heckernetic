@@ -1,8 +1,8 @@
 const { ApplicationCommandOptionType, AttachmentBuilder, Client, Interaction } = require('discord.js');
 const calculateLevelXp = require(`../../utilities/calculateLevelXp`);
+const { Font, RankCardBuilder } = require('canvacord');
 const colors = require('../../tools/colors.json');
 const Level = require(`../../models/Level`);
-const canvacord = require('canvacord');
 const Discord = require('discord.js');
 
 module.exports = {
@@ -70,19 +70,26 @@ module.exports = {
 
         let currentRank = allLevels.findIndex((level) => level.userId === targetUserId) + 1;
 
-        const rank = new canvacord.RankCardBuilder()
+        Font.loadDefault();
+
+        const rank = new RankCardBuilder()
             .setAvatar(targetUserObject.user.displayAvatarURL({ size: 256 }))
             .setRank(currentRank)
             .setLevel(fetchedLevel.level)
             .setCurrentXP(fetchedLevel.xp)
             .setRequiredXP(calculateLevelXp(fetchedLevel.level))
             // .setStatus(targetUserObject.presence.status)
-            // .setProgressBar('#FFA500', 'COLOR')
+            // .setRank('#FFA500', 'COLOR')
             .setUsername(targetUserObject.user.username)
-            //.setDiscriminator(targetUserObject.user.discriminator);
-
-        const data = await rank.build();
-        const attachment = new AttachmentBuilder(data);
+            // .setDiscriminator(targetUserObject.user.discriminator)
+            .setTextStyles({
+                level: "LEVEL:", 
+                xp: "EXP:", 
+                rank: "RANK:",
+            });
+           
+           const image = await rank.build({ format: 'png',});
+           const attachment = new AttachmentBuilder(image);
 
         interaction.editReply({ files: [attachment], allowedMentions: { repliedUser: true } });
     }

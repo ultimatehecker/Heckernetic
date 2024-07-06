@@ -11,15 +11,25 @@ const levelSchema = new Schema({
         required: true
     },
 
+    level: {
+        type: Number,
+        default: 0
+    },
+
+    rank: {
+        type: Number,
+        default: 0
+    },
+
     xp: {
         type: Number,
         default: 0
     },
 
-    level: {
+    lifetimeXp: {
         type: Number,
         default: 0
-    }
+    },
 });
 
 module.exports = model('Level', levelSchema);

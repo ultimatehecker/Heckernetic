@@ -1,9 +1,11 @@
 const { ApplicationCommandOptionType, AttachmentBuilder, Client, Interaction } = require('discord.js');
+const { Font, RankCardBuilder, BuiltInGraphemeProvider } = require('canvacord');
 const calculateLevelXp = require(`../../utilities/calculateLevelXp`);
-const { Font, RankCardBuilder } = require('canvacord');
 const colors = require('../../tools/colors.json');
 const Level = require(`../../models/Level`);
 const Discord = require('discord.js');
+const fileSystem = require('fs');
+const path = require('path');
 
 module.exports = {
     name: 'level',
@@ -48,7 +50,7 @@ module.exports = {
         const targetUserId = mentionedUserId || interaction.user.id;
         const targetUserObject = await interaction.guild.members.fetch(targetUserId);
 
-        const fetchedLevel = Level.findOne({ userId: targetUserId, guildId: interaction.guild.id });
+        const fetchedLevel = await Level.findOne({ userId: targetUserId, guildId: interaction.guild.id });
 
         if(!fetchedLevel) {
             const user404 = new Discord.EmbedBuilder()
@@ -71,25 +73,39 @@ module.exports = {
         let currentRank = allLevels.findIndex((level) => level.userId === targetUserId) + 1;
 
         Font.loadDefault();
+        let backgroundImage = path.join(__dirname, '../../images/rankcard.jpg');
+        const bufferedCard = fileSystem.readFileSync(backgroundImage);
 
         const rank = new RankCardBuilder()
             .setDisplayName(targetUserObject.displayName)
             .setUsername(targetUserObject.user.username)
-            .setAvatar(targetUserObject.user.displayAvatarURL({ size: 256 }))
+            .setAvatar(targetUserObject.user.displayAvatarURL({ format: 'jpg', size: 512 }))
+            .setBackground(bufferedCard)
+            .setGraphemeProvider(BuiltInGraphemeProvider.FluentEmojiHighContrast)
+            .setStatus(targetUserObject.presence.status)
             .setCurrentXP(fetchedLevel.xp)
             .setRequiredXP(calculateLevelXp(fetchedLevel.level))
             .setLevel(fetchedLevel.level)
             .setRank(currentRank)
-            .setStatus(targetUserObject.presence.status)
+            .setOverlay(40)
             .setTextStyles({
                 level: "LEVEL:", 
                 xp: "EXP:", 
                 rank: "RANK:",
+            })
+            .setStyles({
+                progressbar: {
+                  thumb: {
+                    style: {
+                      backgroundColor: "#d61a1a",
+                    },
+                  },
+                },
             });
-           
-           const image = await rank.build({ format: 'png',});
-           const attachment = new AttachmentBuilder(image);
-
-        interaction.editReply({ files: [attachment], allowedMentions: { repliedUser: true } });
+            
+        rank.build().then((data) => {
+            const attachment = new AttachmentBuilder(data, 'rank.png');
+            return interaction.editReply({ files: [attachment], allowedMentions: { repliedUser: true } });
+        });
     }
 }

@@ -1,1 +1,5 @@
-module.exports = (level) => 100 * level || 1;
+const { levelArray } = require ('../functions/levelArray.js');
+
+module.exports = (level) => {
+    return levelArray[level] // Using until a nice function is found
+}

@@ -1,16 +1,10 @@
 const calculateLevelXp = require(`../../utilities/calculateLevelXp`);
-// const getRandomXp = require('../../functions/getRandomXp');
+const getRandomXp = require('../../functions/getRandomXp');
 const { Client, Message } = require('discord.js');
 const colors = require(`../../tools/colors.json`);
 const Level = require('../../models/Level');
 const Discord = require('discord.js');
 const cooldowns = new Set();
-
-function getRandomXp(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 
 /**
  * @param {Client} client
@@ -25,7 +19,6 @@ module.exports = async (client, message) => {
     }
 
     if (!message.inGuild() || message.author.bot || cooldowns.has(message.author.id)) return;
-    const xpToDistribute = getRandomXp(5, 15);
 
     const query = {
         userId: message.author.id,
@@ -36,11 +29,13 @@ module.exports = async (client, message) => {
         const level = await Level.findOne(query);
 
         if(level) {
-            level.xp += xpToDistribute;
-            console.log(level.xp)
+            const calculatedXpDistribution = getRandomXp.randomizeXp(level.level);
+
+            level.xp += calculatedXpDistribution;
+            level.lifetimeXp += calculatedXpDistribution;
 
             if (level.xp > calculateLevelXp(level.level)) {
-                level.xp = 0;
+                level.xp = level.xp - calculateLevelXp(level.level);
                 level.level += 1;
 
                 const levelUp = new Discord.EmbedBuilder()
@@ -57,7 +52,7 @@ module.exports = async (client, message) => {
                 cooldowns.add(message.author.id);
                 setTimeout(() => {
                     cooldowns.delete(message.author.id);
-                }, 60000);
+                }, (60000 - (level.level * 1000)));
             }
         } else {
             const newLevel = new Level({
@@ -67,7 +62,6 @@ module.exports = async (client, message) => {
             });
       
             await newLevel.save();
-            console.log(newLevel)
             cooldowns.add(message.author.id);
             setTimeout(() => {
               cooldowns.delete(message.author.id);

@@ -10,6 +10,21 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+
+    lastDaily: {
+        type: Date,
+        required: true,
+    },
+
+    ssn: {
+        type: String,
+        required: true
+    },
+
+    bank: {
+        type: Array,
+        default: []
+    },
     
     infractions: {
         type: Number,
@@ -17,11 +32,6 @@ const userSchema = new Schema({
     },
 
     netherite: {
-        type: Number,
-        default: 0
-    },
-
-    emeralds: {
         type: Number,
         default: 0
     },
@@ -34,16 +44,6 @@ const userSchema = new Schema({
     iron: {
         type: Number,
         default: 0
-    },
-
-    bank: {
-        type: Number,
-        required: true
-    },
-
-    lastDaily: {
-        type: Date,
-        required: true,
     },
 
     infractions: {

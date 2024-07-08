@@ -5,10 +5,14 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'credits',
     description: 'Gives people credit where credit is due for making the bot possible.',
-    devOnly: true,
-    testOnly: false,
-    //options: Object[],
-    deleted: false,
+    defaultPermission: true,
+    options: [],
+    type: 'general',
+    example: '/credits',
+    usage: '/credits',
+    //devOnly: true,
+    //testOnly: false,
+    //deleted: false,
   
     /**
      * 

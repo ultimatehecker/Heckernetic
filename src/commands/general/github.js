@@ -5,10 +5,14 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'github',
     description: 'Responds with the link to Hecknetic\'s GitHub Repository.',
-    devOnly: true,
-    testOnly: false,
-    //options: Object[],
-    deleted: false,
+    defaultPermission: true,
+    options: [],
+    type: 'general',
+    example: '/github',
+    usage: '/github',
+    //devOnly: true,
+    //testOnly: false,
+    //deleted: false,
   
     /**
      * 

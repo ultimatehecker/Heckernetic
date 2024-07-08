@@ -12,6 +12,18 @@ module.exports = (exceptions = []) => {
             const commandObject = require(commandFile);
             if(exceptions.includes(commandObject.name)) continue;
             localCommands.push(commandObject);
+
+            if(commandObject.options) {
+                for(const option of commandObject.options) {
+                    if(option.type === 'SUB_COMMAND' || option.type === 'SUB_COMMAND_GROUP') {
+                        const subCommands = option.options;
+
+                        for(const subCommand of subCommands) {
+                            localCommands.push(subCommand);
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -6,10 +6,14 @@ const { callback } = require('./info');
 module.exports = {
     name: "discord",
     description: "Reponds with a link to invite yourself to the Support Server.",
-    devOnly: false,
-    testOnly: false,
-    //options: Object[],
-    deleted: false,
+    defaultPermission: true,
+    options: [],
+    type: "general",
+    example: "/discord",
+    usage: "/discord",
+    //devOnly: false,
+    //testOnly: false,
+    //deleted: false,
 
     /**
      * 

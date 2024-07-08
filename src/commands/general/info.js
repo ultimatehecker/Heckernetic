@@ -7,10 +7,14 @@ const os = require('os-utils');
 module.exports = {
     name: 'info',
     description: 'Responds with various information about the bot and the server',
-    devOnly: true,
-    testOnly: false,
-    //options: Object[],
-    deleted: false,
+    defaultPermission: true,
+    options: [],
+    type: 'general',
+    example: '/info',
+    usage: '/info',
+    //devOnly: true,
+    //testOnly: false,
+    //deleted: false,
   
     /**
      * 

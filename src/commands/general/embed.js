@@ -5,9 +5,8 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'embed',
     description: 'Gives people credit where credit is due for making the bot possible.',
-    devOnly: true,
-    testOnly: false,
-    options: [
+	defaultPermission: true,
+	options: [
         {
             name: 'title',
             description: 'The title for the embed',
@@ -135,7 +134,12 @@ module.exports = {
             type: ApplicationCommandOptionType.String,
         },
     ],
-    deleted: false,
+	type: 'general',
+	example: '/embed [title] [description] (color) (footer)',
+	usage: '/embed Welcome "Welcome to the server" GREYPLE "By ultimate_hecker#1165"',
+    //devOnly: true,
+    //testOnly: false,
+    //deleted: false,
   
     /**
      * 

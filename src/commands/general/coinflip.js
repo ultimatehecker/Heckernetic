@@ -5,10 +5,14 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'coinflip',
     description: 'Starts a coinflip between two people',
-    devOnly: true,
-    testOnly: false,
-    //options: Object[],
-    deleted: false,
+    defaultPermission: true,
+    options: [],
+    type: 'general',
+    example: '/coinflip',
+    usage: '/coinflip',
+    //devOnly: true,
+    //testOnly: false,
+    //deleted: false,
   
     /**
      * 

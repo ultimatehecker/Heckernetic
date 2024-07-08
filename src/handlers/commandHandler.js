@@ -93,9 +93,9 @@ module.exports = (Discord, client) => {
             throw new ReferenceError("❌ Please provide a GUILD_ID in the .env file to deploy commands to a specific guild.");
         }
 
-        console.time(`Finished Sending Slash (/) Command Data to Discord for Guild ${process.env.DEV_GUILD_ID} in`);
+        console.time(`Finished Sending Slash (/) Command Data to Discord for Guild ${process.env.GUILD_ID} in`);
         client.application.commands.set(slashCommands, process.env.GUILD_ID).then(() => {
-            console.timeEnd(`Finished Sending Slash (/) Command Data to Discord for Guild ${process.env.DEV_GUILD_ID} in`);
+            console.timeEnd(`Finished Sending Slash (/) Command Data to Discord for Guild ${process.env.GUILD_ID} in`);
         });
     } else if(process.argv.includes('-D')) {
         console.time(`Finished Sending Slash (/) Command Data to Discord Globally in`);

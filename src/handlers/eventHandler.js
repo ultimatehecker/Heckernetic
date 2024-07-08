@@ -1,25 +1,24 @@
 const path = require('path');
-const { Client } = require('discord.js');
+const fileSystem = require('fs');
+const { Client, Discord } = require('discord.js');
 const getAllFiles = require('../utilities/getAllFiles');
 
 /**
  * 
- * @param {Client} client
+ * @param {Client} Discord
+ * @param {Discord} client
  */
 
-module.exports = (client) => {
-    const eventFolders = getAllFiles(path.join(__dirname, '..', 'events'), true);
+module.exports = (Discord, client) => {
+	const load_dir = (dirs) => {
+		const event_files = fileSystem.readdirSync(`./src/events/${dirs}`).filter((file) => file.endsWith("js"));
 
-    for (const eventFolder of eventFolders) {
-        const eventFiles = getAllFiles(eventFolder);
-        eventFiles.sort((a, b) => a > b);
+		for (const file of event_files) {
+			const event = require(`../events/${dirs}/${file}`);
+			const event_name = file.split(".")[0];
+			client.on(event_name, event.bind(null, Discord, client));
+		}	
+	};
 
-        const eventName = eventFolder.replace(/\\/g, '/').split('/').pop();
-        client.on(eventName, async (arg) => {
-            for(const eventFile of eventFiles) {
-                const eventFunction = require(eventFile);
-                await eventFunction(client, arg);
-            }
-        });
-    }
-}
+	["client"].forEach((e) => load_dir(e));
+};

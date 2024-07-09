@@ -1,8 +1,5 @@
-const { Client, Interaction } = require('discord.js');
+const { Client, Discord, Interaction } = require('discord.js');
 const colors = require(`../../tools/colors.json`);
-const Discord = require('discord.js');
-const { description, devOnly, callback, deleted } = require('./info');
-const { options } = require('./embed');
 
 module.exports = {
     name: 'overview',
@@ -13,12 +10,12 @@ module.exports = {
     deleted: false,
 
     /**
-     * 
+     * @param {Discord} Discord
      * @param {Client} client 
      * @param {Interaction} interaction 
      */
 
-    callback: async (client, interaction) => {
+    callback: async (Discord, client, interaction, serverDocument) => {
         await interaction.deferReply({ ephemeral: false });
 
         let author = {

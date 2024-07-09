@@ -11,7 +11,6 @@ module.exports = {
     deleted: false,
 
     /**
-     * 
      * @param {Discord} Discord
      * @param {Client} client 
      * @param {Interaction} interaction 

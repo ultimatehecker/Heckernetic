@@ -1,13 +1,11 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Interaction } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Discord, Interaction } = require('discord.js');
 const colors = require(`../../tools/colors.json`);
-const Discord = require('discord.js');
 
 module.exports = {
     name: 'github',
     description: 'Responds with the link to Hecknetic\'s GitHub Repository.',
     defaultPermission: true,
     options: [],
-    type: 'general',
     example: '/github',
     usage: '/github',
     //devOnly: true,
@@ -15,12 +13,12 @@ module.exports = {
     //deleted: false,
   
     /**
-     * 
+     * @param {Discord} Discord
      * @param {Client} client 
      * @param {Interaction} interaction 
      */
 
-    callback: async (client, interaction) => {
+    callback: async (Discord, client, interaction, serverDocument) => {
         await interaction.deferReply({ ephemeral: false });
 
         let author = {

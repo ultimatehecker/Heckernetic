@@ -1,13 +1,11 @@
-const { Client, Interaction } = require('discord.js');
+const { Client, Discord, Interaction } = require('discord.js');
 const colors = require(`../../tools/colors.json`);
-const Discord = require('discord.js');
 
 module.exports = {
     name: 'coinflip',
-    description: 'Starts a coinflip between two people',
+    description: 'Starts a coinflip between two people.',
     defaultPermission: true,
     options: [],
-    type: 'general',
     example: '/coinflip',
     usage: '/coinflip',
     //devOnly: true,
@@ -15,12 +13,12 @@ module.exports = {
     //deleted: false,
   
     /**
-     * 
+     * @param {Discord} Discord
      * @param {Client} client 
      * @param {Interaction} interaction 
      */
 
-    callback: async (client, interaction) => {
+    callback: async (Discord, client, interaction, serverDocument) => {
         await interaction.deferReply({ ephemeral: false });
 
         let author = {

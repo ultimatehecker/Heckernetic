@@ -1,7 +1,6 @@
-const { Client, Interaction } = require('discord.js');
+const { Client, Discord, Interaction } = require('discord.js');
 const colors = require('../../tools/colors.json');
 const User = require('../../models/User');
-const Discord = require('discord.js');
 
 const dailyAmount = {
     netherite: 0,
@@ -18,12 +17,12 @@ module.exports = {
     deleted: false,
 
     /**
-     * 
+     * @param {Discord} Discord
      * @param {Client} client 
      * @param {Interaction} interaction 
      */
 
-    callback: async (client, interaction) => {
+    callback: async (Discord, client, interaction, serverDocument) => {
 
         let authorError = {
             name: "Error",

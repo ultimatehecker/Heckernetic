@@ -1,7 +1,5 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Interaction } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Discord, Interaction } = require('discord.js');
 const colors = require(`../../tools/colors.json`);
-const Discord = require('discord.js');
-
 module.exports = {
     name: "invite",
     description: "Responds with a link to invite Heckernetic to your server.",
@@ -11,12 +9,12 @@ module.exports = {
     deleted: false,
 
     /**
-     * 
+     * @param {Discord} Discord
      * @param {Client} client 
      * @param {Interaction} interaction 
      */
 
-    callback: async (client, interaction) => {
+    callback: async (Discord, client, interaction, serverDocument) => {
         await interaction.deferReply({ ephemeral: false });
 
         let author = {

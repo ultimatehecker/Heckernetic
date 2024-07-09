@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType, Client, Interaction } = require('discord.js');
+const { ApplicationCommandOptionType, Client, Discord, Interaction } = require('discord.js');
 const colors = require('../../tools/colors.json');
 const Level = require('../../models/Level');
 const User = require('../../models/User');
@@ -21,12 +21,12 @@ module.exports = {
     deleted: false,
 
     /**
-     * 
+     * @param {Discord} Discord
      * @param {Client} client 
      * @param {Interaction} interaction 
      */
 
-    callback: async (client, interaction) => {
+    callback: async (Discord, client, interaction, serverDocument) => {
 
         let authorError = {
             name: "Error",

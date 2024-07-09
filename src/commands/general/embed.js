@@ -1,6 +1,5 @@
-const { ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonStyle, Client, Interaction, resolveColor } = require('discord.js');
+const { ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonStyle, Client, Discord, Interaction } = require('discord.js');
 const colors = require(`../../tools/colors.json`);
-const Discord = require('discord.js');
 
 module.exports = {
     name: 'embed',
@@ -134,7 +133,6 @@ module.exports = {
             type: ApplicationCommandOptionType.String,
         },
     ],
-	type: 'general',
 	example: '/embed [title] [description] (color) (footer)',
 	usage: '/embed Welcome "Welcome to the server" GREYPLE "By ultimate_hecker#1165"',
     //devOnly: true,
@@ -142,12 +140,12 @@ module.exports = {
     //deleted: false,
   
     /**
-     * 
+     * @param {Discord} Discord
      * @param {Client} client 
      * @param {Interaction} interaction 
      */
 
-    callback: async (client, interaction) => {
+    callback: async (Discord, client, interaction, serverDocument) => {
         await interaction.deferReply({ ephemeral: false });
 
         let authorError = {

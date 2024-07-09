@@ -1,6 +1,5 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Interaction } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Discord, Interaction } = require('discord.js');
 const colors = require('../../tools/colors.json');
-const Discord = require('discord.js');
 
 module.exports = {
   name: 'latency',
@@ -11,12 +10,12 @@ module.exports = {
   deleted: false,
 
   /**
-   * 
-   * @param {Client} client 
-   * @param {Interaction} interaction 
-   */
-  
-  callback: async (client, interaction) => {
+     * @param {Discord} Discord
+     * @param {Client} client 
+     * @param {Interaction} interaction 
+     */
+
+  callback: async (Discord, client, interaction, serverDocument) => {
     await interaction.deferReply({ ephemeral: false });
     const latencyTest = new ActionRowBuilder().addComponents(new ButtonBuilder().setLabel('Retry').setCustomId('Retry').setStyle(ButtonStyle.Primary));
 

@@ -58,6 +58,7 @@ module.exports = async (Discord, client, message) => {
 
     serverDocument = await Server.findOne(query);
     const level = await Level.findOne(levelQuery);
+    const xpToDistribute = getRandomXp.getRandomXp(35, 50);
 
     try {
         if(!serverDocument) {

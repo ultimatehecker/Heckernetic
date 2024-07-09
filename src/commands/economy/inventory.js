@@ -2,7 +2,6 @@ const { ApplicationCommandOptionType, Client, Discord, Interaction } = require('
 const colors = require('../../tools/colors.json');
 const Level = require('../../models/Level');
 const User = require('../../models/User');
-const Discord = require('discord.js');
 const axios = require('axios');
 
 module.exports = {

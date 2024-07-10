@@ -1,3 +1,4 @@
+const calculatedTimeout = require(`../../functions/calculatedTimeout`);
 const calculateLevelXp = require(`../../utilities/calculateLevelXp`);
 const { Client, Discord, Message } = require('discord.js');
 const getRandomXp = require('../../functions/getRandomXp');
@@ -60,64 +61,65 @@ module.exports = async (Discord, client, message) => {
     const level = await Level.findOne(levelQuery);
     const xpToDistribute = getRandomXp.getRandomXp(35, 50);
 
-    try {
-        if(!serverDocument) {
-            const newServerDocument = new Server({
-                guildId: message.guild.id,
-                prefix: "h!",
-                welcomeMessage: "{member-mention} has joined the server",
-                welcomeChannelID: "none",
-                leaveChannelID: "none",
-                leaveMessage: "{member-tag} has left the server :(",
-                reactionRoles: [],
-            });
-    
-            await newServerDocument.save().catch((err) => {
-                console.error("There was an error when saving the newly created server document: ", err);
-            });
-        } 
-    
-        if(level) {
-            const calculatedXpDistribution = getRandomXp.randomizeXp(level.level);
-    
-            level.xp += calculatedXpDistribution;
-            level.lifetimeXp += calculatedXpDistribution;
-    
-            if (level.xp > calculateLevelXp(level.level)) {
-                level.xp = level.xp - calculateLevelXp(level.level);
-                level.level += 1;
-    
-                const levelUp = new Discord.EmbedBuilder()
-                    .setAuthor(authorLevelUp)
-                    .setColor(colors["MainColor"])
-                    .setDescription(`Congratulations ${message.author.username}! You've leveled up to level \`${level.level}\`!`);
-    
-                message.reply({ embeds: [levelUp], allowedMentions: { repliedUser: true } });
-    
-                await level.save().catch((err) => {
-                    console.error("There as an error when saving the level: ", err);
-                });
-    
-                cooldowns.add(message.author.id);
-                setTimeout(() => {
-                    cooldowns.delete(message.author.id);
-                }, (60000 - (level.level * 1000)));
-            }
-        } else {
-            const newLevel = new Level({
-              userId: message.author.id,
-              guildId: message.guild.id,
-              xp: xpToDistribute,
-            });
-      
-            await newLevel.save();
-            cooldowns.add(message.author.id);
-            setTimeout(() => {
-              cooldowns.delete(message.author.id);
-            }, 60000);
+    if(!serverDocument) {
+        const newServerDocument = new Server({
+            guildId: message.guild.id,
+            prefix: "h!",
+            welcomeMessage: "{member-mention} has joined the server",
+            welcomeChannelID: "none",
+            leaveChannelID: "none",
+            leaveMessage: "{member-tag} has left the server :(",
+            reactionRoles: [],
+        });
+
+        await newServerDocument.save().catch((err) => {
+            console.error("There was an error when saving the newly created server document: ", err);
+        });
+    } 
+
+    if (!message.inGuild() || message.author.bot || cooldowns.has(message.author.id)) return;
+
+    if(level) {
+        const calculatedXpDistribution = getRandomXp.randomizeXp(level.level);
+        console.log("Calculated XP Distribution: ", calculatedXpDistribution);
+
+        level.xp += calculatedXpDistribution;
+        level.lifetimeXp += calculatedXpDistribution;
+
+        console.log(level.xp, level.lifetimeXp)
+
+        if (level.xp > calculateLevelXp(level.level)) {
+            level.xp = level.xp - calculateLevelXp(level.level);
+            level.level += 1;
+
+            const levelUp = new Discord.EmbedBuilder()
+                .setAuthor(authorLevelUp)
+                .setColor(colors["MainColor"])
+                .setDescription(`Congratulations ${message.author.username}! You've leveled up to level \`${level.level}\`!`);
+
+            message.reply({ embeds: [levelUp], allowedMentions: { repliedUser: true } });
         }
-    } catch (error) {
-        console.error("There was an error somewhere: ", error)
+
+        await level.save().catch((err) => {
+            console.error("There as an error when saving the level: ", err);
+        });
+
+        cooldowns.add(message.author.id);
+        setTimeout(() => {
+            cooldowns.delete(message.author.id);
+        }, 60000);
+    } else {
+        const newLevel = new Level({
+            userId: message.author.id,
+            guildId: message.guild.id,
+            xp: xpToDistribute,
+        });
+    
+        await newLevel.save();
+        cooldowns.add(message.author.id);
+        setTimeout(() => {
+            cooldowns.delete(message.author.id);
+        }, 60000);
     }
 
     if (!message.content.startsWith(serverDocument.prefix) || message.author.bot) return;

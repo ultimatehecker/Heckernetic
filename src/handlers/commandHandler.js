@@ -1,8 +1,15 @@
 const getAllFiles = require('../utilities/getAllFiles');
+const { Client, Discord} = require('discord.js');
 const fileSystem = require('fs');
 const path = require('path');
 
 let slashCommands;
+
+/**
+ * 
+ * @param {Discord} Discord 
+ * @param {Client} client 
+ */
 
 module.exports = (Discord, client) => {
     const commandFolders = fileSystem.readdirSync(`./src/commands/`);
@@ -22,7 +29,7 @@ module.exports = (Discord, client) => {
                 continue;
             }
         }
-    }
+    }                                      
 
     client.user.id = process.env.CLIENT_ID
     slashCommands = basicCommands.map((command) => {

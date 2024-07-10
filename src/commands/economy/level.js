@@ -75,6 +75,8 @@ module.exports = {
         let currentRank = allLevels.findIndex((level) => level.userId === targetUserId) + 1;
 
         Font.loadDefault();
+        //Font.fromFileSync(path.join(__dirname, '..', '..', 'tools', 'fonts', 'PlaywriteHU.ttf'));
+
         let backgroundImage = path.join(__dirname, '../../images/rankcard.jpg');
         const bufferedCard = fileSystem.readFileSync(backgroundImage);
 

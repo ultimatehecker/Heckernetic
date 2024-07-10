@@ -15,10 +15,6 @@ module.exports = (Discord, client) => {
         status: 'online',
     });
 
-    ["command_handler", "event_handler"].forEach((handler) => {
-        require(`./handlers/${handler}`)(Discord, client);
-    });
-
     console.log("Heckernetic Client PFP", client.user.displayAvatarURL());
     console.log(`Heckernetic has been successfully started at ${currentDate.getUTCMonth()}/${currentDate.getUTCDate()}/${currentDate.getUTCFullYear()} @ ${currentDate.getUTCHours()}:${currentDate.getUTCMinutes()} UTC`);
 }

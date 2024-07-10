@@ -1,5 +1,5 @@
-const { ApplicationCommandOptionType, AttachmentBuilder, Client, Discord, Interaction } = require('discord.js');
-const { Font, LeaderboardBuilder, BuiltInGraphemeProvider, LeaderboardBuilder } = require('canvacord');
+const { AttachmentBuilder, Client, Discord, Interaction } = require('discord.js');
+const { BuiltInGraphemeProvider, Font, LeaderboardBuilder } = require('canvacord');
 const calculateLevelXp = require(`../../utilities/calculateLevelXp`);
 const colors = require('../../tools/colors.json');
 const Level = require(`../../models/Level`);
@@ -9,9 +9,13 @@ const path = require('path');
 module.exports = {
     name: 'leaderboard',
     description: 'Responds with the balance of the user or the specified user',
-    devOnly: true,
-    testOnly: false,
-    deleted: false,
+    defaultPermission: true,
+    options: [],
+    example: '/leaderboard',
+    usage: '/leaderboard',
+    //devOnly: true,
+    //testOnly: false,
+    //deleted: false,
 
     /**
      * @param {Discord} Discord
@@ -20,30 +24,6 @@ module.exports = {
      */
 
     callback: async (Discord, client, interaction, serverDocument) => {
-
-        async function getOrderedLeaderboard() {
-            let leaderboard = [];
-            let rankIndex = 1;
-
-            for (let i = 0; i < fetchedLevel.length; i++) {
-                let { User, level, xp } = fetchedLevel[i];
-        
-                let member = await client.users.fetch(User);
-        
-                leaderboard.push({
-                  avatar: member.displayAvatarURL(),
-                  username: member.username,
-                  displayName: member.globalName,
-                  level: level,
-                  xp: xp,
-                  rank: rankIndex,
-                });
-        
-                rankIndex++;
-              }
-        
-              return leaderboard;
-            }
 
         let authorError = {
             name: "Error",
@@ -61,8 +41,9 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: false });
 
-        const fetchedLevel = await Level.find({ guildId: interaction.guild.id });
-        console.log(fetchedLevel);
+        const fetchedLevel = await Level.find();
+
+        /*
 
         if(!fetchedLevel) {
             const user404 = new Discord.EmbedBuilder()
@@ -73,51 +54,49 @@ module.exports = {
             return interaction.editReply({ embeds: [user404], allowedMentions: { repliedUser: true } });
         }
 
-        const leaderboardUsers = await getOrderedLeaderboard();
+        */
+
+        fetchedLevel.sort((a, b) => {
+            if(a.level === b.level) {
+                return b.xp - a.xp;
+            } else {
+                return b.level - a.level;
+            }
+        }).filter(user => client.users.cache.has(user.userId)).slice(0, 10); // Keep only the top 10 users
+
+        const leaderboardEntries = [];
+        let rankNumber = 1;
+
+        for(const members of fetchedLevel) {
+            const member = await client.users.fetch(members.userId);
+            const avatar = member.displayAvatarURL({ format: 'png', forceStatic: true });
+            const username = member.username;
+            const displayName = member.displayName;
+            const level = members.level;
+            const xp = members.xp;
+            const rank = rankNumber;
+
+            leaderboardEntries.push({ avatar, username, displayName, level, xp, rank });
+            rankNumber++;
+        }
 
         Font.loadDefault();
-        const leaderboard = new LeaderboardBuilder() 
-            .setHeader({ title: `${interaction.guild.name} Leaderboard`, image: interaction.guild.iconURL()  || client.user.displayAvatarURL(), subtitle: `${guild.members.cache.size} Members`, })
-            .setVariant(`horizontal`)
-            .setPlayers(leaderboardUsers)
-
-        /*
+        //Font.fromFileSync(path.join(__dirname, '..', '..', 'tools', 'fonts', 'PlaywriteHU.ttf'));
 
         let backgroundImage = path.join(__dirname, '../../images/rankcard.jpg');
         const bufferedCard = fileSystem.readFileSync(backgroundImage);
+        const totalMembers = interaction.guild.memberCount;
 
-        const rank = new LeaderboardBuilder()
-            .setDisplayName(targetUserObject.displayName)
-            .setUsername(targetUserObject.user.username)
-            .setAvatar(targetUserObject.user.displayAvatarURL({ format: 'jpg', size: 512 }))
-            .setBackground(bufferedCard)
+        const leaderboard = new LeaderboardBuilder() 
+            .setHeader({ title: `${interaction.guild.name} Leaderboard`, image: interaction.guild.iconURL()  || client.user.displayAvatarURL(), subtitle: `${totalMembers} Members` })
             .setGraphemeProvider(BuiltInGraphemeProvider.FluentEmojiHighContrast)
-            .setStatus(targetUserObject.presence.status)
-            .setCurrentXP(fetchedLevel.xp)
-            .setRequiredXP(calculateLevelXp(fetchedLevel.level))
-            .setLevel(fetchedLevel.level)
-            .setRank(currentRank)
-            .setOverlay(40)
-            .setTextStyles({
-                level: "LEVEL:", 
-                xp: "EXP:", 
-                rank: "RANK:",
-            })
-            .setStyles({
-                progressbar: {
-                  thumb: {
-                    style: {
-                      backgroundColor: "#d61a1a",
-                    },
-                  },
-                },
-            });
-            
-        rank.build().then((data) => {
-            const attachment = new AttachmentBuilder(data, 'rank.png');
+            .setBackground(bufferedCard)
+            .setVariant(`default`)
+            .setPlayers(leaderboardEntries)
+
+        leaderboard.build().then((data) => {
+            const attachment = new AttachmentBuilder(data, 'leaderboard.png');
             return interaction.editReply({ files: [attachment], allowedMentions: { repliedUser: true } });
         });
-
-        */
     }
 }

@@ -9,8 +9,7 @@ const path = require('path');
 module.exports = {
     name: 'level',
     description: 'Responds with the balance of the user or the specified user',
-    devOnly: true,
-    testOnly: false,
+    defaultPermission: true,
     options: [
         {
             name: 'user',
@@ -19,7 +18,11 @@ module.exports = {
             required: false,
         }
     ],
-    deleted: false,
+    example: '/level (user)',
+    usage: '/level ultimate_hecker',
+    //devOnly: true,
+    //testOnly: false,
+    //deleted: false,
 
     /**
      * @param {Discord} Discord

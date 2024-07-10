@@ -3,10 +3,13 @@ const colors = require(`../../tools/colors.json`);
 module.exports = {
     name: "invite",
     description: "Responds with a link to invite Heckernetic to your server.",
-    devOnly: false,
-    testOnly: false,
-    //options: Object[],
-    deleted: false,
+    defaultPermission: true,
+    options: [],
+    example: "/invite",
+    usage: "/invite",
+    //devOnly: false,
+    //testOnly: false,
+    //deleted: false,
 
     /**
      * @param {Discord} Discord

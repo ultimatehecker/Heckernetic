@@ -4,10 +4,13 @@ const colors = require('../../tools/colors.json');
 module.exports = {
   name: 'latency',
   description: 'Reponds with the latency from the Discord API and myself',
-  devOnly: false,
-  testOnly: false,
-  //options: Object[],
-  deleted: false,
+  defaultPermission: true,
+  options: [],
+  example: "/latency",
+  usage: "/latency",
+  //devOnly: false,
+  //testOnly: false,
+ // deleted: false,
 
   /**
      * @param {Discord} Discord

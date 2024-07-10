@@ -5,17 +5,20 @@ const axios = require('axios');
 module.exports = {
     name: 'xkcd',
     description: 'Responds with the xkcd of the day or the specified comic numbers',
-    devOnly: true,
-    testOnly: false,
+    defaultPermission: true,
     options: [
-    {
-        name: 'number',
-        description: 'The comic number you want to see',
-        type: ApplicationCommandOptionType.Integer,
-        required: false,
-    }
-    ],
-    deleted: false,
+        {
+            name: 'number',
+            description: 'The comic number you want to see',
+            type: ApplicationCommandOptionType.Integer,
+            required: false,
+        }
+        ],
+    example: "/xkcd (comic number)",
+    usage: "/xkcd 500",
+    //devOnly: true,
+    //testOnly: false,
+    //deleted: false,
 
     /**
      * @param {Discord} Discord

@@ -4,10 +4,14 @@ const colors = require(`../../tools/colors.json`);
 module.exports = {
     name: 'overview',
     description: 'Responds with a brief overview of the server.',
-    devOnly: true,
-    testOnly: false,
+    defaultPermission: true,
+    options: [],
+    example: "/overview",
+    usage: "/overview",
+    //devOnly: true,
+    //testOnly: false,
     // options: Object[]
-    deleted: false,
+    //deleted: false,
 
     /**
      * @param {Discord} Discord
